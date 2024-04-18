@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h3>{% block title %} All Payments {% endblock %}</h3>
+	<p>Explanation text</p>
+	<div class="scrollbox">
+		<table>
+			<thead>
+				<th>Company</th>
+				<th>Amount</th>
+				<th>Payment Date</th>
+				<th>Status</th>
+				<th>Due Date</th>
+				<th>Actions</th>
+			</thead>
+			{% for data in payments %}
+			<tbody>
+				<td>{{data.Company}}</td>
+				<td>{{data.Amount}}</td>
+				<td>{{data.PaymentDate}}</td>
+				<td>{{data.Status}}</td>
+				<td>{{data.DueDate}}</td>
+				<td>Edit Delete</td>
+			</tbody>
+			{% endfor%}
+		</table>
+	</div>
+	<br>
+	<h3>Payment Summary</h3>
+	<p>Please select a due date from the drop-down and enter the tax rate to calculate the taxes owed.</p>
+	<label for="duedate">Due Date</label>
+		<select id="duedate" name="duedate" required>
+			{% for date in duedates %}
+				<option value="{{date}}">{{date}}</option>
+			{% endfor%}
+		</select>
+	<label>Tax rate</label>
+	<input type="number" name="taxrate" placeholder="0" min="0" max="100">
+	<table>
+		<thead>
+			<th>Company</th>
+			<th>Amount</th>
+			<th>Payment Date</th>
+			<th>Status</th>
+			<th>Due Date</th>
+		</thead>
+		{% for data in payments %}
+		<tbody>
+			<td>{{data.Company}}</td>
+			<td>{{data.Amount}}</td>
+			<td>{{data.PaymentDate}}</td>
+			<td>{{data.Status}}</td>
+			<td>{{data.DueDate}}</td>
+		</tbody>
+		{% endfor%}
+		<tbody>
+			<td colspan="4">Total Amount</td>
+			<td>$100</td>
+		</tbody>
+		<tbody>
+			<td colspan="4">Tax Rate</td>
+			<td>6%</td>
+		</tbody>
+		<tbody>
+			<td colspan="4">Tax Due</td>
+			<td>$6</td>
+		</tbody>
+	</table>
+{% endblock %}
