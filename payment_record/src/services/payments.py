@@ -1,5 +1,7 @@
-from app.config.database import db
-from app.models.Payment import Payment
+import logging
+
+from src.config.database import db
+from src.models.Payment import Payment
 from flask import abort
 
 def create_payment(data):
@@ -10,6 +12,7 @@ def create_payment(data):
 
 def get_all_payment():
     payments = Payment.query.all()
+    logging.info(f"Hereare: {{payments}}")
     if not payments:
         abort(404)
     return payments

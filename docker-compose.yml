@@ -1,53 +1,22 @@
 version: "3.9"
 services:
-  nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - tax_calculation
-      - payment_record
-      - reporting
-    networks:
-      - backend
-  mysql:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'tax_payment_system'
-      MYSQL_ROOT_PASSWORD: '1234'
-    ports:
-      - "3306:3306"
-    volumes:
-      - my-db:/var/lib/mysql
-    networks:
-      - backend
-  tax_calculation:
-    build: ./tax_calculation
-    ports:
-      - "5000"
-    networks:
-      - backend
-
-  payment_record:
-    build: ./payment_record
-    ports:
-      - "5001"
-    depends_on:
-      - mysql
-    networks:
-      - backend
-
-  reporting:
-    build: ./reporting
-    ports:
-      - "5002"
-    networks:
-      - backend
-
+    mysql:
+        build: ./database/
+        restart: always
+        environment:
+            MYSQL_DATABASE: 'tax_payment_system'
+            MYSQL_ROOT_PASSWORD: '1234'
+        ports:
+            - "3306:3306"
+        networks:
+            - app-network
+    payment_record:
+        build: ./payment_record
+        ports:
+            - "8000:5000"
+        depends_on:
+            - mysql
+        networks:
+            - app-network
 networks:
-  backend:
-volumes:
-  my-db:
+    app-network:

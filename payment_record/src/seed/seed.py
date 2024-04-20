@@ -1,5 +1,5 @@
-from app.models.Payment import Payment
-from app.config.database import db
+from src.models.Payment import Payment
+from src.config.database import db
 
 data = [
     {'company': 'derm', 'amount': 4100.00, 'payment_date': '2023-09-26', 'status': 'paid', 'due_date': '2024-01-15'},
@@ -17,8 +17,15 @@ data = [
 
 
 def seed_data():
-    for item in data:
-        payment = Payment(**item)
-        db.session.add(payment)
-    db.session.commit()
-    print("Data inserted successfully.")
+    try:
+        # Delete existing data
+        db.session.query(Payment).delete()
+        # Add new data
+        for item in data:
+            payment = Payment(**item)
+            db.session.add(payment)
+        db.session.commit()
+        print("Data inserted successfully.")
+    except Exception as e:
+        db.session.rollback()
+        print(f"An error occurred: {e}")

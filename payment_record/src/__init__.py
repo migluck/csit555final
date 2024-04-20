@@ -1,7 +1,8 @@
 from flask import Flask
 from flask_migrate import Migrate
-from app.config.database import db
-from app.controllers import Payment
+from src.config.database import db
+from src.seed.seed import seed_data
+from src.controllers import Payment, Health
 
 import os
 migrate = Migrate()
@@ -9,11 +10,14 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/academic_records"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:1234@mysql:3306/tax_payment_system"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
     migrate.init_app(app, db)
+    #seed
+    seed_data()
     app.register_blueprint(Payment.bp)
+    app.register_blueprint(Health.bp)
 
     return app
