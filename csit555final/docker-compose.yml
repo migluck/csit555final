@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+    mysql:
+        build: ./database/
+        restart: always
+        environment:
+            MYSQL_DATABASE: 'tax_payment_system'
+            MYSQL_ROOT_PASSWORD: '1234'
+        ports:
+            - "3306:3306"
+        networks:
+            - app-network
+    payment_record:
+        build: ./payment_record
+        command: sh -c "sleep 10s ; python ./app.py"
+        restart: always
+        ports:
+            - "8000:5000"
+        depends_on:
+            - mysql
+        networks:
+            - app-network
+        env_file:
+            - ./payment_record/.env
+    tax_calculation:
+        build: ./tax_calculation
+        ports:
+            - "8001:5000"
+        depends_on:
+            - payment_record
+        networks:
+            - app-network
+        env_file:
+            - ./tax_calculation/.env
+    reporting:
+        build: ./reporting
+        ports:
+            - "8002:5000"
+        depends_on:
+            - payment_record
+        networks:
+            - app-network
+        env_file:
+            - ./reporting/.env
+networks:
+    app-network:

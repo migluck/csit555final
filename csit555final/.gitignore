@@ -1,0 +1,4 @@
+venv
+/payment_record/venv/
+/reporting/venv/
+/tax_calculation/venv/
