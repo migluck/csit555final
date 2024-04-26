@@ -1,4 +1,3 @@
-DROP DATABASE tax_payment_system;
 CREATE DATABASE IF NOT EXISTS tax_payment_system;
 USE tax_payment_system;
 -- Payment Table

@@ -1,9 +1,8 @@
 FROM python:3.8-slim-buster
 WORKDIR /reporting
 # Install dependencies:
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
 COPY . .
+RUN pip install -r requirements.txt
+EXPOSE 5000
 # Run the application:
-CMD python app.py
-EXPOSE 5002
+ENTRYPOINT ["python", "app.py"]
