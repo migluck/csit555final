@@ -1,7 +1,6 @@
 from src.config.database import db
 from datetime import datetime
 
-
 class Payment(db.Model):
     __tablename__ = 'payment'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -26,9 +25,9 @@ class Payment(db.Model):
             'id': self.id,
             'company': self.company,
             'amount': self.amount,
-            'payment_date': self.payment_date.isoformat() if self.payment_date else None,
+            'payment_date': self.payment_date if self.payment_date else None,
             'status': self.status,
-            'due_date': self.due_date.isoformat() if self.due_date else None,
+            'due_date': self.payment_date if self.due_date else None,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
