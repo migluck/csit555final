@@ -1,0 +1,33 @@
+
+table {
+    width: 100%;
+}
+
+td, th {
+    padding: 5px 15px;
+}
+
+thead {
+    border-bottom: 5px double;
+}
+
+tr {
+    border-bottom: 1px solid;
+}
+
+tbody tr:hover {
+background-color: lightgray;
+}
+
+input, select {
+    display: block;
+}
+
+fieldset:disabled {
+  display: none;
+}
+
+.scrollbox {
+    max-height: 250px;
+    overflow: auto;
+}
