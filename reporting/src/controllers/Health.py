@@ -12,7 +12,7 @@ def fetch_details():
 
 @bp.route("/")
 def hello_world():
-    return "<p>Hello from Reporting! </p>"
+    return "<p>Hello from reporting! </p>"
 
 
 
