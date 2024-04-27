@@ -1,6 +1,7 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, redirect, url_for, jsonify, render_template
 from src.services  import payments
 import logging
+import json
 
 bp = Blueprint('payment', __name__, url_prefix='/payments')
 
@@ -19,10 +20,13 @@ def index():
 # Create new payment
 @bp.route('/', methods=['POST'])
 def create_payment():
-    data = request.get_json()
+    # data = request.get_json()
+    form_data = request.form
+    data_dict = {key: value for key, value in form_data.items()}
     try:
-        new_payment = payments.create_payment(data)
-        return jsonify(new_payment.to_dict()), 201
+        new_payment = payments.create_payment(data_dict)
+        # return jsonify(new_payment.to_dict()), 201
+        return redirect("http://127.0.0.1:5001/reporting/all"), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 

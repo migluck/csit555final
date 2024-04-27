@@ -14,7 +14,7 @@
 	</script>
 	<h3>{% block title %} Add Payments {% endblock %}</h3>
 	<p>Instruction text</p>
-	<form name="add" action="/add" method="POST">
+	<form name="add" action="http://127.0.0.1:5000/payments" method="POST">
 		<label>Company Name</label>
 		<input type="text" name="company" placeholder="Company" required>
 		<label>Amount</label>
@@ -26,11 +26,11 @@
 		</select>
 		<fieldset name="paymentdatefield" disabled>
 			<label>Payment Date</label>
-			<input type="date" name="paymentdate" placeholder="Payment Date" required>
+			<input type="date" name="payment_date" placeholder="Payment Date" required>
 		</fieldset>
 		<label for="duedate">Due Date</label>
-		<select id="duedate" name="duedate" required>
-			{% for date in duedates %}
+		<select id="duedate" name="due_date" required>
+			{% for date in ['01/15/2024', '04/15/2024'] %}
 				<option value="{{date}}">{{date}}</option>
 			{% endfor%}
 		</select>
