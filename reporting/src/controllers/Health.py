@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, render_template
 import socket
 
-bp = Blueprint('health', __name__, url_prefix='/')
+bp = Blueprint('health', __name__, url_prefix='/health')
 
 
 def fetch_details():

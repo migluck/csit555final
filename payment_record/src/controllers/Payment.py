@@ -1,8 +1,8 @@
 from flask import Blueprint, request, redirect, url_for, jsonify, render_template
 from src.services  import payments
 import logging
-import json
-
+import datetime
+from flask_cors import cross_origin
 bp = Blueprint('payment', __name__, url_prefix='/payments')
 
 # Get all payments
@@ -49,10 +49,10 @@ def update_payment(id):
         return jsonify({"error": "Payment not found"}), 404
 
 # Delete payment by id
-@bp.route('/<int:id>', methods=['DELETE'])
-def delete_payment(id):
-    success = payments.delete_payment(id)
+@bp.route('/delete', methods=['POST'])
+def delete_payment():
+    payment_id = request.form.get('paymentId')
+    success = payments.delete_payment(payment_id)
     if success:
-        return jsonify({"success": "Payment deleted"}), 200
+        return redirect(request.referrer)
     return jsonify({"error": "Payment not found"}), 404
-

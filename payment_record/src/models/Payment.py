@@ -27,7 +27,7 @@ class Payment(db.Model):
             'amount': self.amount,
             'payment_date': self.payment_date if self.payment_date else None,
             'status': self.status,
-            'due_date': self.payment_date if self.due_date else None,
+            'due_date': self.due_date if self.due_date else None,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
