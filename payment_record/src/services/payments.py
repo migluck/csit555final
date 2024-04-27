@@ -45,4 +45,3 @@ def delete_payment(payment_id):
         db.session.commit()
         return True
     return False
-
