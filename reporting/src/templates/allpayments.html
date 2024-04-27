@@ -35,6 +35,9 @@
     });
 
     $(document).on("click", ".editButton", function () {
+         var paymentId = $(this).data('paymentid');
+         $(".modal-body #updatePaymentidInput").val(paymentId);
+
          var companyName = $(this).data('company');
          $(".modal-body #editCompanyInput").val(companyName);
 
@@ -48,7 +51,18 @@
          $(".modal-body #editStatusInput").val(status);
 
          var dueDate = $(this).data('duedate');
-         $("#editModal .modal-body #editDuedateInput").val(DueDate);
+         $("#editModal .modal-body #editDuedateInput").val(dueDate);
+
+         if (status == 'paid'){
+             $('#paymentDateCalendar').prop('disabled', false);
+             $('#editPaymentdateInput').val(convertDate(paymentDate));
+         }
+         else if (status == 'unpaid'){
+             $('#paymentDateCalendar').prop('disabled', true);
+         }
+         r = convertDate(dueDate)
+        console.log(r)
+         $('#editDuedateInput').val(r)
     });
 
     $(document).on("click", ".deleteButton", function () {
@@ -88,37 +102,42 @@
         $("#TaxDue").text("$" + taxDue.toFixed(2));
     }
 
-function getUpcomingDueDates() {
-    var today = new Date();
-    var year = today.getFullYear();
-    var dates = [
-        new Date(year, 0, 15),  // January 15
-        new Date(year, 3, 15),  // April 15
-        new Date(year, 5, 15),  // June 15
-        new Date(year, 8, 15)   // September 15
-    ];
-    var upcomingDates = dates.map(date => {
-        if (date <= today) {
-            date.setFullYear(date.getFullYear() + 1);
-        }
-        return date;
-    });
-    var sortedDates = upcomingDates.sort((a, b) => a - b);
-    return upcomingDates.map(date => date.toISOString().split('T')[0]);
-}
+    function getUpcomingDueDates() {
+        var today = new Date();
+        var year = today.getFullYear();
+        var dates = [
+            new Date(year, 0, 15),  // January 15
+            new Date(year, 3, 15),  // April 15
+            new Date(year, 5, 15),  // June 15
+            new Date(year, 8, 15)   // September 15
+        ];
+        var upcomingDates = dates.map(date => {
+            if (date <= today) {
+                date.setFullYear(date.getFullYear() + 1);
+            }
+            return date;
+        });
+        var sortedDates = upcomingDates.sort((a, b) => a - b);
+        return upcomingDates.map(date => date.toISOString().split('T')[0]);
+    }
 
-function onlyUnique(value, index, array) {
-  return array.indexOf(value) === index;
-}
+    function onlyUnique(value, index, array) {
+      return array.indexOf(value) === index;
+    }
 
-function getExistingDueDates() {
-    var dates = [];
-    $(".duedate").each(function(){
-        dates.push($(this).text());
-    });
-    var uniqueDates = dates.filter(onlyUnique);
-    return uniqueDates;
-}
+    function getExistingDueDates() {
+        var dates = [];
+        $(".duedate").each(function(){
+            dates.push($(this).text());
+        });
+        var uniqueDates = dates.filter(onlyUnique);
+        return uniqueDates;
+    }
+
+    function convertDate(inputFormat) {
+        var dateParts = inputFormat.split('/');
+        return dateParts[2] + '-' + dateParts[0] + '-' + dateParts[1];
+    }
 
 </script>
 <h3>{% block title %} All Payments {% endblock %}</h3>
@@ -208,8 +227,9 @@ function getExistingDueDates() {
                 <h4 class="modal-title">Edit Payment</h4>
             </div>
             <div class="modal-body">
-                <form name="edit" action="/edit" method="POST">
+                <form name="edit" action="http://127.0.0.1:5000/payments/update" method="POST">
                     <label>Company Name</label>
+                    <input type="hidden" id="updatePaymentidInput" name="paymentId" value="0">
                     <input id="editCompanyInput" type="text" name="company" value="Apple" required>
                     <label>Amount</label>
                     <input id="editAmountInput" type="number" name="amount" value="1000" required>
@@ -218,7 +238,7 @@ function getExistingDueDates() {
                         <option value="unpaid">Unpaid</option>
                         <option value="paid" selected>Paid</option>
                     </select>
-                    <fieldset name="paymentdatefield" disabled>
+                    <fieldset id="paymentDateCalendar" name="paymentdatefield" disabled>
                         <label>Payment Date</label>
                         <input id="editPaymentdateInput" type="date" name="paymentdate" placeholder="Payment Date"
                                required>
@@ -230,7 +250,7 @@ function getExistingDueDates() {
                         <option id="duedate3" value="">Jun 15</option>
                         <option id="duedate4" value="">Sep 15</option>
                     </select>
-                    <button type="submit" class="btn btn-default" data-dismiss="modal">Save</button>
+                    <button type="submit" class="btn btn-default">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </form>
             </div>
@@ -249,7 +269,7 @@ function getExistingDueDates() {
             <div class="modal-footer">
                 <form name="delete" action="http://127.0.0.1:5000/payments/delete" method="POST">
                     <input type="hidden" id="deletePaymentidInput" name="paymentId" value="0">
-                    <button type="submit" class="btn btn-default" data-dismiss="modal">Delete</button>
+                    <button type="submit" class="btn btn-default">Delete</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </form>
             </div>

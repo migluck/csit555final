@@ -4,7 +4,6 @@ from src.config.database import db
 from src.models.Payment import Payment
 from flask import abort
 
-
 def get_all_payments():
     payments = Payment.query.all()
     if not payments:
@@ -16,12 +15,16 @@ def get_payment_by_id(payment_id):
     return Payment.query.get(payment_id)
 
 def create_payment(data):
+    payment_date = data.get('payment_date', None)
+    if payment_date:
+        payment_date = convert_date_format(payment_date)
+
     new_payment = Payment(
         company=data['company'],
         amount=data['amount'],
-        payment_date=data['payment_date'],
+        payment_date=payment_date,
         status=data['status'],
-        due_date=data['due_date']
+        due_date=convert_date_format(data['due_date'])
     )
     db.session.add(new_payment)
     db.session.commit()
@@ -45,3 +48,10 @@ def delete_payment(payment_id):
         db.session.commit()
         return True
     return False
+
+def convert_date_format(date_str):
+    # Parse the date from 'YYYY-MM-DD' to a datetime object
+    date_object = datetime.strptime(date_str, '%Y-%m-%d')
+    # Format the datetime object to 'MM/DD/YYYY' string format
+    new_date_format = date_object.strftime('%m/%d/%Y')
+    return new_date_format

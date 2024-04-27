@@ -20,13 +20,11 @@ def index():
 # Create new payment
 @bp.route('/', methods=['POST'])
 def create_payment():
-    # data = request.get_json()
     form_data = request.form
     data_dict = {key: value for key, value in form_data.items()}
     try:
-        new_payment = payments.create_payment(data_dict)
-        # return jsonify(new_payment.to_dict()), 201
-        return redirect("http://127.0.0.1:5001/reporting/all"), 201
+        payments.create_payment(data_dict)
+        return redirect(request.referrer)
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
@@ -39,12 +37,14 @@ def get_payment(id):
     return jsonify({"error": "Payment not found"}), 404
 
 # Update payment by id
-@bp.route('/<int:id>', methods=['PUT'])
-def update_payment(id):
-    data = request.get_json()
-    payment = payments.update_payment(id, data)
+@bp.route('/update', methods=['POST'])
+def update_payment():
+    form_data = request.form
+    data = {key: value for key, value in form_data.items()}
+    payment_id = data['paymentId']
+    payment = payments.update_payment(payment_id, data)
     if payment:
-        return jsonify(payment.to_dict())
+        return redirect(request.referrer)
     else:
         return jsonify({"error": "Payment not found"}), 404
 
