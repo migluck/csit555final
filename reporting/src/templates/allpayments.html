@@ -46,16 +46,18 @@
     });
 
     function updateFilterTable() {
-        console.log("update filter table");
         var dueDate = $("#duedatefilter").val();
         var amountSum = 0;
+        if(dueDate != null) {
         $("#FilterTable tbody tr").each(function(){
-            if($(this).children(".PaymentDateCell").text() == dueDate) {
+            $(this).show();
+            if($(this).children(".DuedateCell").text() != dueDate) {
                 $(this).hide();
             } else {
                 amountSum += Number($(this).children(".AmountCell").text());
             }
         });
+        }
 
         var taxRate = $("#taxratefilter").val();
 
@@ -109,6 +111,8 @@
     <label for="duedatefilter">Due Date</label>
     <select id="duedatefilter" name="duedatefilter" onchange="updateFilterTable()">
         <option value="" disabled selected>Select due date</option>
+        <option value="2025-04-15">2025-04-15</option>
+        <option value="2024-07-15">2024-07-15</option>
         {% for date in duedates %}
         <option value="{{date}}">{{date}}</option>
         {% endfor%}
@@ -126,12 +130,12 @@
     </thead>
     <tbody>
         {% for data in payments %}
-        <tr id="PaymentID{{data.Student_number}}">
-            <td class="CompanyCell">{{data.Company}}</td>
-            <td class="AmountCell">{{data.Amount}}</td>
-            <td class="PaymentdateCell">{{data.PaymentDate}}</td>
-            <td class="StatusCell">{{data.Status}}</td>
-            <td class="DuedateCell">{{data.DueDate}}</td>
+        <tr id="PaymentID{{data.id}}">
+            <td class="CompanyCell">{{data.company}}</td>
+            <td class="AmountCell">{{data.amount}}</td>
+            <td class="PaymentdateCell">{{data.payment_date}}</td>
+            <td class="StatusCell">{{data.status}}</td>
+            <td class="DuedateCell">{{data.due_date}}</td>
         </tr>
         {% endfor%}
     </tbody>
@@ -195,7 +199,7 @@
                 <p>Are you sure you want to delete this payment?</p>
             </div>
             <div class="modal-footer">
-                <form name="delete" action="http://127.0.0.1:5000/payments/147" method="POST">
+                <form name="delete" action="/delete" method="POST">
                     <input type="hidden" id="deletePaymentidInput" name="paymentId" value="0">
                     <button type="submit" class="btn btn-default" data-dismiss="modal">Delete</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
