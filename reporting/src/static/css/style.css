@@ -19,6 +19,11 @@ tbody tr:hover {
 background-color: lightgray;
 }
 
+tfoot {
+    border-top: 3px solid;
+    font-weight: bold;
+}
+
 input, select {
     display: block;
 }

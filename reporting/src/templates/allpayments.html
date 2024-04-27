@@ -46,16 +46,18 @@
     });
 
     function updateFilterTable() {
-        console.log("update filter table");
         var dueDate = $("#duedatefilter").val();
         var amountSum = 0;
+        if(dueDate != null) {
         $("#FilterTable tbody tr").each(function(){
-            if($(this).children(".PaymentDateCell").text() == dueDate) {
+            $(this).show();
+            if($(this).children(".DuedateCell").text() != dueDate) {
                 $(this).hide();
             } else {
                 amountSum += Number($(this).children(".AmountCell").text());
             }
         });
+        }
 
         var taxRate = $("#taxratefilter").val();
 
@@ -82,19 +84,19 @@
         <tbody>
         {% for data in payments %}
         <tr>
-        <td>{{data.Name}}</td>
-        <td>{{data.Amount}}</td>
-        <td>{{data.PaymentDate}}</td>
-        <td>{{data.Status}}</td>
-        <td>{{data.DueDate}}</td>
+        <td>{{data.company}}</td>
+        <td>{{data.amount}}</td>
+        <td>{{data.payment_date}}</td>
+        <td>{{data.status}}</td>
+        <td>{{data.due_date}}</td>
         <td>
             <button type="button" class="editButton btn btn-info btn-sm" data-toggle="modal" data-target="#editModal"
-                    data-backdrop="static" data-paymentid="{{data.PaymentID}}" data-company="{{data.Company}}" data-amount="{{data.Amount}}"
-                    data-paymentdate="{{data.PaymentDate}}" data-status="{{data.Status}}"
-                    data-duedate="{{data.DueDate}}">Edit
+                    data-backdrop="static" data-paymentid="{{data.id}}" data-company="{{data.company}}" data-amount="{{data.amount}}"
+                    data-paymentdate="{{data.payment_date}}" data-status="{{data.status}}"
+                    data-duedate="{{data.due_date}}">Edit
             </button>
             <button type="button" class="deleteButton btn btn-info btn-sm" data-toggle="modal"
-                    data-target="#deleteModal" data-backdrop="static" data-paymentid="{{data.PaymentID}}">Delete
+                    data-target="#deleteModal" data-backdrop="static" data-paymentid="{{data.id}}">Delete
             </button>
         </td>
         </tr>
@@ -109,6 +111,8 @@
     <label for="duedatefilter">Due Date</label>
     <select id="duedatefilter" name="duedatefilter" onchange="updateFilterTable()">
         <option value="" disabled selected>Select due date</option>
+        <option value="2025-04-15">2025-04-15</option>
+        <option value="2024-07-15">2024-07-15</option>
         {% for date in duedates %}
         <option value="{{date}}">{{date}}</option>
         {% endfor%}
@@ -126,12 +130,12 @@
     </thead>
     <tbody>
         {% for data in payments %}
-        <tr id="PaymentID{{data.Student_number}}">
-            <td class="CompanyCell">{{data.Company}}</td>
-            <td class="AmountCell">{{data.Amount}}</td>
-            <td class="PaymentdateCell">{{data.PaymentDate}}</td>
-            <td class="StatusCell">{{data.Status}}</td>
-            <td class="DuedateCell">{{data.DueDate}}</td>
+        <tr id="PaymentID{{data.id}}">
+            <td class="CompanyCell">{{data.company}}</td>
+            <td class="AmountCell">{{data.amount}}</td>
+            <td class="PaymentdateCell">{{data.payment_date}}</td>
+            <td class="StatusCell">{{data.status}}</td>
+            <td class="DuedateCell">{{data.due_date}}</td>
         </tr>
         {% endfor%}
     </tbody>
