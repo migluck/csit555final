@@ -1,8 +1,6 @@
 from flask import Blueprint, request, redirect, url_for, jsonify, render_template
 from src.services  import payments
 import logging
-import datetime
-from flask_cors import cross_origin
 bp = Blueprint('payment', __name__, url_prefix='/payments')
 
 # Get all payments

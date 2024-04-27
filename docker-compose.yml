@@ -22,8 +22,6 @@ services:
             - app-network
         env_file:
             - ./payment_record/.env
-        volumes:
-            - data-payment_record:/payment_record
     reporting:
         build: ./reporting
         ports:
@@ -34,10 +32,6 @@ services:
             - app-network
         env_file:
             - ./reporting/.env
-        volumes:
-            - data-reporting:/reporting
 networks:
     app-network:
-volumes:
-    data-payment_record:
-    data-reporting:
+

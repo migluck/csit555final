@@ -4,27 +4,18 @@ from flask import Blueprint, jsonify, render_template
 import requests
 
 bp = Blueprint('reporting', __name__, url_prefix='/')
-PAYMENT_RECORD_SERVICE_URL = os.getenv('PAYMENT_RECORD_SERVICE_URL')
+PAYMENT_RECORD_INTERNAL_URL = os.getenv('PAYMENT_RECORD_INTERNAL_URL')
+PAYMENT_RECORD_EXTERNAL_URL = os.getenv('PAYMENT_RECORD_EXTERNAL_URL')
 
-# @bp.route('/', methods=['GET'])
-# def index():
-#     try:
-#         response = requests.get(f"{PAYMENT_RECORD_SERVICE_URL}/payment/all")
-#         if response.status_code == 200:
-#             data = response.json()
-#             return render_template('index.html', payments=data)
-#         return jsonify({'message': f"Failed to get items from Service A {response.status_code}"})
-#     except Exception as e:
-#         logging.error(f"Error fetching payments: {e}")
-#         return jsonify({"error": str(e)}), 500
 
 @bp.route('/', methods=['GET'])
 def all_payment():
     try:
-        response = requests.get("http://127.0.0.1:5000/payments")
+        response = requests.get(f"{PAYMENT_RECORD_INTERNAL_URL}/payments")
         if response.status_code == 200:
             data = response.json()
-            return render_template('allpayments.html', payments=data)
+            print(PAYMENT_RECORD_INTERNAL_URL)
+            return render_template('allpayments.html', payments=data, PAYMENT_RECORD_INTERNAL_URL=PAYMENT_RECORD_INTERNAL_URL, PAYMENT_RECORD_EXTERNAL_URL=PAYMENT_RECORD_EXTERNAL_URL)
         return jsonify({'message': f"Failed to get items from Service A {response.status_code}"})
     except Exception as e:
         logging.error(f"Error fetching payments: {e}")
@@ -35,5 +26,5 @@ def home():
 
 @bp.route('/add', methods=['GET'])
 def add_payment():
-    return render_template('addpayment.html')
+    return render_template('addpayment.html', PAYMENT_RECORD_EXTERNAL_URL=PAYMENT_RECORD_EXTERNAL_URL)
 

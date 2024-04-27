@@ -29,9 +29,10 @@ Each service is containerized with its own Dockerfile, making the system easy to
    ```
 
 4. **Access the application:**
-    - Access the main gateway via `http://localhost:8000`
-    - Access individual services via their respective ports as configured in `docker-compose.yml`.
-    - For example To access Reporting service try `http://localhost:8002/reporting/`
+    - Access the main gateway via 
+   ```bash
+    http://localhost:8001
+   ```
 
 5. **Shut down the services:**
    ```bash

@@ -48,7 +48,7 @@ function getUpcomingDueDates() {
 	</script>
 	<h3>{% block title %} Add Payments {% endblock %}</h3>
 	<p>Instruction text</p>
-	<form name="add" action="http://127.0.0.1:5000/payments" method="POST">
+	<form name="add" action="{{ PAYMENT_RECORD_EXTERNAL_URL }}/payments" method="POST">
 		<label>Company Name</label>
 		<input type="text" name="company" placeholder="Company" required>
 		<label>Amount</label>
