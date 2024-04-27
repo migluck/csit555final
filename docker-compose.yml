@@ -24,22 +24,10 @@ services:
             - ./payment_record/.env
         volumes:
             - data-payment_record:/payment_record
-    tax_calculation:
-        build: ./tax_calculation
-        ports:
-            - "8001:5000"
-        depends_on:
-            - payment_record
-        networks:
-            - app-network
-        env_file:
-            - ./tax_calculation/.env
-        volumes:
-            - data-tax_calculation:/tax_calculation
     reporting:
         build: ./reporting
         ports:
-            - "8002:5000"
+            - "8001:5000"
         depends_on:
             - payment_record
         networks:
@@ -52,5 +40,4 @@ networks:
     app-network:
 volumes:
     data-payment_record:
-    data-tax_calculation:
     data-reporting:
